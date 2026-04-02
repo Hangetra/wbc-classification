@@ -80,7 +80,7 @@ jupyter lab
 
 ## Requirements
 See `requirements.txt`. Primary dependencies:
-- TensorFlow ≥ 2.13
+- TensorFlow ≥ 2.10
 - NumPy, Pandas, Matplotlib, Seaborn
 - scikit-learn (metrics + stratified split)
 - opencv-python (Grad-CAM)
