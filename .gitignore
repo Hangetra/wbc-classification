@@ -1,0 +1,18 @@
+# Raw data
+Data/raw/
+
+# Intermediate / processed data
+Data/processed/
+
+# Model artifacts
+Models/
+
+# Outputs
+Results/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Python
+__pycache__/
+*.pyc
