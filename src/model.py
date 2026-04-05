@@ -79,7 +79,7 @@ def compile_phase1(model: tf.keras.Model, learning_rate: float = 1e-3):
         loss="categorical_crossentropy",
         metrics=[
             "accuracy",
-            tf.keras.metrics.AUC(name="auc"),   # multi_label param added in TF 2.12+
+            #tf.keras.metrics.AUC(name="auc"),   # multi_label param added in TF 2.12+
         ],
     )
     _print_trainable_summary(model)
@@ -121,7 +121,7 @@ def compile_phase2(model: tf.keras.Model, learning_rate: float = 1e-5):
         loss="categorical_crossentropy",
         metrics=[
             "accuracy",
-            tf.keras.metrics.AUC(name="auc"),
+            #tf.keras.metrics.AUC(name="auc"),
         ],
     )
     return model
