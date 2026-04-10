@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import tensorflow as tf
 from tensorflow.keras import layers, models, regularizers
+#from tensorflow.keras.applications.efficientnet import preprocess_input
 
 NUM_CLASSES  = 9
 IMG_SIZE     = 300
@@ -43,6 +44,7 @@ def build_model(num_classes: int = NUM_CLASSES) -> tf.keras.Model:
         include_top=False,
         weights="imagenet",
         input_shape=(IMG_SIZE, IMG_SIZE, 3),
+        #include_preprocessing=False,
         # Note: include_preprocessing param was added in TF 2.12+
         # TF 2.10 EfficientNet handles normalisation internally — feed [0,255] directly
     )
@@ -50,6 +52,8 @@ def build_model(num_classes: int = NUM_CLASSES) -> tf.keras.Model:
 
     # ── Classification head ───────────────────────────────────────────────────
     inputs = tf.keras.Input(shape=(IMG_SIZE, IMG_SIZE, 3), name="input_image")
+
+    #x = preprocess_input(inputs)   
     x = base(inputs, training=False)  # training=False keeps BN in inference mode
 
     x = layers.GlobalAveragePooling2D(name="gap")(x)
@@ -79,7 +83,7 @@ def compile_phase1(model: tf.keras.Model, learning_rate: float = 1e-3):
         loss="categorical_crossentropy",
         metrics=[
             "accuracy",
-            #tf.keras.metrics.AUC(name="auc"),   # multi_label param added in TF 2.12+
+            tf.keras.metrics.AUC(name="auc"),   # multi_label param added in TF 2.12+
         ],
     )
     _print_trainable_summary(model)
@@ -121,7 +125,7 @@ def compile_phase2(model: tf.keras.Model, learning_rate: float = 1e-5):
         loss="categorical_crossentropy",
         metrics=[
             "accuracy",
-            #tf.keras.metrics.AUC(name="auc"),
+            tf.keras.metrics.AUC(name="auc"),
         ],
     )
     return model
