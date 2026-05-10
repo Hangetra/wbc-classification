@@ -129,8 +129,7 @@ def plot_training_history(history, save_path: str | Path = None):
 # ── Grad-CAM ───────────────────────────────────────────────────────────────────
 def make_gradcam_heatmap(
     img_array: np.ndarray,
-    model: tf.keras.Model,
-    last_conv_layer_name: str = "top_conv",
+    model: tf.keras.Model
 ) -> np.ndarray:
     """
     Generate Grad-CAM heatmap for a single preprocessed image.
@@ -138,8 +137,6 @@ def make_gradcam_heatmap(
     Args:
         img_array:          Shape (1, 300, 300, 3), float32 in [0,255]
         model:              Full Keras model
-        last_conv_layer_name: Name of last conv layer in EfficientNetB3.
-                            Default 'top_conv' is the correct name for EffNetB3.
 
     Returns:
         heatmap: 2D numpy array, values in [0,1]
@@ -148,9 +145,9 @@ def make_gradcam_heatmap(
     grad_model = tf.keras.models.Model(
         inputs=model.inputs,
         outputs=[
-            model.get_layer(last_conv_layer_name).output,
-            model.output,
-        ],
+            model.get_layer("efficientnetb3").output,
+            model.output
+        ]
     )
 
     with tf.GradientTape() as tape:
@@ -168,7 +165,6 @@ def make_gradcam_heatmap(
     heatmap = tf.maximum(heatmap, 0) / (tf.math.reduce_max(heatmap) + 1e-8)
 
     return heatmap.numpy()
-
 
 def overlay_gradcam(
     original_img: np.ndarray,
@@ -201,8 +197,7 @@ def save_gradcam_grid(
     model: tf.keras.Model,
     dataset: tf.data.Dataset,
     save_dir: str | Path = "results/gradcam",
-    n_per_class: int = 3,
-    last_conv_layer: str = "top_conv",
+    n_per_class: int = 3
 ):
     """
     Generate and save Grad-CAM visualisations for n_per_class samples per class.
@@ -233,7 +228,7 @@ def save_gradcam_grid(
 
             # Grad-CAM
             img_batch = np.expand_dims(img_arr, axis=0)
-            heatmap   = make_gradcam_heatmap(img_batch, model, last_conv_layer)
+            heatmap   = make_gradcam_heatmap(img_batch, model)
             cam_img   = overlay_gradcam(img_arr.astype(np.uint8), heatmap)
 
             pred      = model.predict(img_batch, verbose=0)

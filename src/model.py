@@ -21,7 +21,7 @@ L2_REG       = 1e-4
 
 # EfficientNetB3 has 385 layers. We unfreeze the last ~80 (top 2 blocks)
 # during Phase 2. Adjust UNFREEZE_FROM if you want more/less fine-tuning.
-UNFREEZE_FROM_LAYER = 300
+UNFREEZE_FROM_LAYER = 250
 
 
 def build_model(num_classes: int = NUM_CLASSES) -> tf.keras.Model:
@@ -49,7 +49,7 @@ def build_model(num_classes: int = NUM_CLASSES) -> tf.keras.Model:
         # TF 2.10 EfficientNet handles normalisation internally — feed [0,255] directly
     )
     base.trainable = False            # frozen for Phase 1
-
+    
     # ── Classification head ───────────────────────────────────────────────────
     inputs = tf.keras.Input(shape=(IMG_SIZE, IMG_SIZE, 3), name="input_image")
 
