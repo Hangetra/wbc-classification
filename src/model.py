@@ -21,7 +21,7 @@ L2_REG       = 1e-4
 
 # EfficientNetB3 has 385 layers. We unfreeze the last ~80 (top 2 blocks)
 # during Phase 2. Adjust UNFREEZE_FROM if you want more/less fine-tuning.
-UNFREEZE_FROM_LAYER = 250
+UNFREEZE_FROM_LAYER = 150
 
 
 def build_model(num_classes: int = NUM_CLASSES) -> tf.keras.Model:

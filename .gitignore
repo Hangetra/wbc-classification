@@ -1,14 +1,17 @@
 # Raw data
-Data/raw/
+data/raw/
+validation/data/raw/
 
 # Intermediate / processed data
-Data/processed/
+data/processed/
+validation/data/processed/
 
 # Model artifacts
-Models/
+models/
 
 # Outputs
-Results/
+results/
+validation/results/
 
 # Notebooks
 .ipynb_checkpoints/
